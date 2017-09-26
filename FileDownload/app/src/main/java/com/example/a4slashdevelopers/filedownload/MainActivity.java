@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             String PATH = Environment.getExternalStorageDirectory() + "/download/";
             File file = new File(PATH);
             file.mkdirs();
-            File outputFile = new File(file, "fb.apk");
+            File outputFile = new File(file, "wahab.apk");
             FileOutputStream fos = new FileOutputStream(outputFile);
 
             InputStream is = conn.getInputStream();
@@ -70,15 +71,30 @@ public class MainActivity extends AppCompatActivity {
             // Read Apk file from file directory
 
             Intent promptInstall = new Intent(Intent.ACTION_VIEW);
-            File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "fb.apk");
+            File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "wahab.apk");
              if (file1.exists())
              {
                  Log.d("Apk","read ");
-             }
-            promptInstall.setDataAndType(Uri.fromFile(file1), "application/vnd.android.package-archive");
-            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            startActivity(promptInstall);
+                //  siliently install app
+                  String command = "adb install "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
+                java.lang.Process install= Runtime.getRuntime().exec((command));
+                    install.wait();
+//                 if (isSuccess==1)
+//                 {
+//
+//                 }
+
+               //  command = "adb install " + file1.getAbsolutePath();
+                // Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
+               //  proc.waitFor();
+                // Runtime.getRuntime().exec("adb install wahab.apk");
+
+             }
+//            promptInstall.setDataAndType(Uri.fromFile(file1), "application/vnd.android.package-archive");
+//            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//            startActivity(promptInstall);
 
             // Complete Read Apk from file Directory
 
@@ -117,6 +133,26 @@ public class MainActivity extends AppCompatActivity {
             return; // swallow a 404
         } catch (IOException e) {
             return; // swallow a 404
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private void installApk(String filename) {
+        File file = new File(filename);
+        if(file.exists()){
+            try {
+//                final String command = "pm install -r " + file.getAbsolutePath();
+//                Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
+//                proc.waitFor();
+
+                String command;
+               // filename = StringUtil.insertEscape(filename);
+                command = "adb install -r " + file.getAbsolutePath()+"/wahab.apk";
+//                Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
+//                proc.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
