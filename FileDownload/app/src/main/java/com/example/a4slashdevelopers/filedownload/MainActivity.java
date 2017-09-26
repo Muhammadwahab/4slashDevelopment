@@ -77,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
                  Log.d("Apk","read ");
 
                 //  siliently install app
-                  String command = "adb install "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
+                  String command = "adb install -r "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
                 java.lang.Process install= Runtime.getRuntime().exec((command));
-                    install.wait();
+
 //                 if (isSuccess==1)
 //                 {
 //
@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
             return; // swallow a 404
         } catch (IOException e) {
             return; // swallow a 404
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
     private void installApk(String filename) {
