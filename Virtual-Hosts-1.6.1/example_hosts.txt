@@ -1,0 +1,33 @@
+#general ipv4
+138.68.143.206	888.com
+138.68.143.206 	32red.com
+138.68.143.206 	pokerstars.com
+138.68.143.206 	casino.com
+138.68.143.206 	4slash.com
+138.68.143.206 	.youtube.com
+138.68.143.206 	facebook.com
+
+#general ipv6
+:: 			www.a.com
+::1			www.q.com
+fe80::1 	www.a.com
+fd15::615e:7461:69a5:430c 	blog.a.com
+fe89:abcd:abcd:abcd:abcd:abcd:abcd:abcd 	www.b.com
+
+
+#wildcard ipv4:
+# a.com=>192.168.100.1
+# www.a.com=>192.168.100.1
+# *.a.com =>192.168.100.1
+# d.a.com=>192.168.100.2
+
+192.168.100.1		 .a.com  # use "." 
+192.168.100.2 		d.a.com # match d.a.com first
+
+#wildcard ipv6:
+# a.com=>fe89:abcd:abcd:abcd:abcd:abcd:abcd:abcd
+# www.a.com=>fe89:abcd:abcd:abcd:abcd:abcd:abcd:abcd
+# *.a.com =>fe89:abcd:abcd:abcd:abcd:abcd:abcd:abcd
+# d.a.com=>fe89::1
+fe89:abcd:abcd:abcd:abcd:abcd:abcd:abcd		 	.a.com  # use "." 
+fe89::1 		d.a.com	# match d.a.com first
