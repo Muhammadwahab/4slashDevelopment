@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
                  Log.d("Apk","read ");
 
                 //  siliently install app
-                  String command = "adb install -r "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
-                java.lang.Process install= Runtime.getRuntime().exec((command));
+//                  String command = "adb install -r "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
+//                java.lang.Process install= Runtime.getRuntime().exec((command));
 
 //                 if (isSuccess==1)
 //                 {
@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 // Runtime.getRuntime().exec("adb install wahab.apk");
 
              }
-//            promptInstall.setDataAndType(Uri.fromFile(file1), "application/vnd.android.package-archive");
-//            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//            startActivity(promptInstall);
+            promptInstall.setDataAndType(Uri.fromFile(file1), "application/vnd.android.package-archive");
+            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(promptInstall);
 
             // Complete Read Apk from file Directory
 
@@ -102,33 +102,7 @@ public class MainActivity extends AppCompatActivity {
             //till here, it works fine - .apk is download to my sdcard in download file
 
 
-//            String PATH = Environment.getExternalStorageDirectory() + "/download/";
-//            File file = new File(PATH);
-          //  file.mkdirs();
-
-//            if (file.mkdirs())
-//            {
-//                File outputFile = new File(file, "app.apk");
-//                Log.d("file","file create");
-//            }
-//            else
-//            {
-//                Log.d("file","file did not create");
 //
-//            }
-
-
-//            DataInputStream stream = new DataInputStream(u.openStream());
-//
-//            byte[] buffer = new byte[contentLength];
-//            stream.readFully(buffer);
-//            stream.close();
-//
-//
-//            DataOutputStream fos = new DataOutputStream(new FileOutputStream(file));
-//            fos.write(buffer);
-//            fos.flush();
-//            fos.close();
         } catch(FileNotFoundException e) {
             return; // swallow a 404
         } catch (IOException e) {
