@@ -61,30 +61,31 @@ public class MainActivity extends AppCompatActivity {
         StatService.autoTrace(this, true,false);
         setContentView(R.layout.activity_main);
         final SwitchButton vpnButton = (SwitchButton) findViewById(R.id.button_start_vpn);
-        final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
-        if (!checkHostUri()) {
-            selectHosts.setText(getString(R.string.select_hosts));
-        }
+       // final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
+//        if (!checkHostUri()) {
+//            selectHosts.setText(getString(R.string.select_hosts));
+//        }
         vpnButton.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
-                    if (!checkHostUri()) {
-                        showDialog();
-                    } else {
-                        startVPN();
-                    }
+//                    if (!checkHostUri()) {
+//                        showDialog();
+//                    } else {
+//                        startVPN();
+//                    }
+                    startVPN();
                 } else {
                     shutdownVPN();
                 }
             }
         });
-        selectHosts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectFile();
-            }
-        });
+//        selectHosts.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                selectFile();
+//            }
+//        });
         LocalBroadcastManager.getInstance(this).registerReceiver(vpnStateReceiver,
                 new IntentFilter(VhostsService.BROADCAST_VPN_STATE));
     }
@@ -189,15 +190,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void setButton(boolean enable) {
         final SwitchButton vpnButton = (SwitchButton) findViewById(R.id.button_start_vpn);
-        final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
+      //  final Button selectHosts = (Button) findViewById(R.id.button_select_hosts);
         if (enable) {
             vpnButton.setChecked(false);
-            selectHosts.setAlpha(1.0f);
-            selectHosts.setClickable(true);
+//            selectHosts.setAlpha(1.0f);
+//            selectHosts.setClickable(true);
         } else {
             vpnButton.setChecked(true);
-            selectHosts.setAlpha(.5f);
-            selectHosts.setClickable(false);
+//            selectHosts.setAlpha(.5f);
+//            selectHosts.setClickable(false);
         }
     }
 

@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.VpnService;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -105,7 +106,14 @@ public class VhostsService extends VpnService {
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, Context.MODE_PRIVATE);
         String uri_path = settings.getString(MainActivity.HOSTS_URI, null);
         try {
-            final InputStream inputStream = getContentResolver().openInputStream(Uri.parse(uri_path));
+           // final InputStream inputStream = getContentResolver().openInputStream(Uri.parse(uri_path));
+            File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "example_hosts.txt");
+            final InputStream inputStream=new FileInputStream(file1);
+
+//            int len1 = 0;
+//            while ((len1 = inputStream.read()) != -1) {
+//                Log.d("readFile",len1+"");
+//            }
             threadHandleHosts=new Thread(){
                 public void run() {
                     DnsChange.handle_hosts(inputStream);
