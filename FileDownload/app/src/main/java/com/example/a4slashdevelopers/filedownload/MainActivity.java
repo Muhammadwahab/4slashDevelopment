@@ -1,5 +1,6 @@
 package com.example.a4slashdevelopers.filedownload;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -33,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-          //  loadFile("https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg");
-           loadFile("http://sirius.androidapks.com/sdata/bf77952865b725cd4b1fa2c54b057bc9/com.facebook.lite_v60.0.0.5.140-72097660_Android-2.3.apk");
+            //  loadFile("https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg");
+            loadFile("http://sirius.androidapks.com/sdata/bf77952865b725cd4b1fa2c54b057bc9/com.facebook.lite_v60.0.0.5.140-72097660_Android-2.3.apk");
             return objects;
         }
 
@@ -56,25 +57,30 @@ public class MainActivity extends AppCompatActivity {
             File outputFile = new File(file, "wahab.apk");
             FileOutputStream fos = new FileOutputStream(outputFile);
 
+            FileOutputStream fout = openFileOutput("wahab.apk", Context.MODE_WORLD_READABLE);
+
+
             InputStream is = conn.getInputStream();
 
             byte[] buffer = new byte[contentLength];
             int len1 = 0;
             while ((len1 = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len1);
+                fout.write(buffer, 0, len1);
             }
-            fos.close();
-            is.close();
+            fout.close();
+            fout.close();
 
             // writing file Complete
 
             // Read Apk file from file directory
+            File myDir = getFilesDir();
 
             Intent promptInstall = new Intent(Intent.ACTION_VIEW);
             File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "wahab.apk");
-             if (file1.exists())
-             {
-                 Log.d("Apk","read ");
+            File secondFile = new File(myDir, "wahab.apk");
+            if (file1.exists())
+            {
+                Log.d("Apk","read ");
 
                 //  siliently install app
 //                  String command = "adb install -r "+Environment.getExternalStorageDirectory() + "/download/wahab.apk";
@@ -85,13 +91,13 @@ public class MainActivity extends AppCompatActivity {
 //
 //                 }
 
-               //  command = "adb install " + file1.getAbsolutePath();
+                //  command = "adb install " + file1.getAbsolutePath();
                 // Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
-               //  proc.waitFor();
+                //  proc.waitFor();
                 // Runtime.getRuntime().exec("adb install wahab.apk");
 
-             }
-            promptInstall.setDataAndType(Uri.fromFile(file1), "application/vnd.android.package-archive");
+            }
+            promptInstall.setDataAndType(Uri.fromFile(secondFile), "application/vnd.android.package-archive");
             promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(promptInstall);
@@ -118,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 //                proc.waitFor();
 
                 String command;
-               // filename = StringUtil.insertEscape(filename);
+                // filename = StringUtil.insertEscape(filename);
                 command = "adb install -r " + file.getAbsolutePath()+"/wahab.apk";
 //                Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
 //                proc.waitFor();

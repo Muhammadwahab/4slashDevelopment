@@ -28,6 +28,8 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.github.xfalcon.vhosts.MainActivity;
 import com.github.xfalcon.vhosts.NetworkReceiver;
 import com.github.xfalcon.vhosts.R;
@@ -107,18 +109,36 @@ public class VhostsService extends VpnService {
         String uri_path = settings.getString(MainActivity.HOSTS_URI, null);
         try {
            // final InputStream inputStream = getContentResolver().openInputStream(Uri.parse(uri_path));
-            File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "example_hosts.txt");
-            final InputStream inputStream=new FileInputStream(file1);
-
-//            int len1 = 0;
-//            while ((len1 = inputStream.read()) != -1) {
-//                Log.d("readFile",len1+"");
+           // code for external storage sdcard
+//            File file1=new File(Environment.getExternalStorageDirectory() + "/download/" + "example_hosts.txt");
+//            if (!file1.exists())
+//            {
+//                // sever call storing file in download folder automatically
+//                Toast.makeText(this, "File Not found", Toast.LENGTH_SHORT).show();
 //            }
+//            else
+//            {
+//                final InputStream inputStream=new FileInputStream(file1);
+//                threadHandleHosts=new Thread(){
+//                    public void run() {
+//                        DnsChange.handle_hosts(inputStream);
+//                    }
+//                };
+//            }
+            // code complete for sdcard
+
+            // code for internal storage
+            String filename = "hostfile.txt";
+            File myDir = getFilesDir();
+
+            File secondInputFile = new File(myDir + "/.download/", filename);
+            final InputStream secondInputStream = new BufferedInputStream(new FileInputStream(secondInputFile));
             threadHandleHosts=new Thread(){
-                public void run() {
-                    DnsChange.handle_hosts(inputStream);
-                }
-            };
+                    public void run() {
+                        DnsChange.handle_hosts(secondInputStream);
+                    }
+                };
+
             threadHandleHosts.start();
         }catch (Exception e){
             Log.e(TAG,"error setup host file service",e);

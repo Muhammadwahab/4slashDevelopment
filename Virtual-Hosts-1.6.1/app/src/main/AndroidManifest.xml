@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.github.xfalcon.vhosts">
+    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+
 
     <application
             android:allowBackup="true"
@@ -8,10 +12,11 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -23,6 +28,21 @@
                 <action android:name="android.net.VpnService"/>
             </intent-filter>
         </service>
+        -<receiver android:name=".vservice.OnBootBroadcastReceiver">
+
+
+        -<intent-filter>
+
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+
+        <!--<action android:name="android.provider.Telephony.SMS_RECEIVED"/>-->
+
+        <category android:name="android.intent.category.HOME"/>
+
+    </intent-filter>
+
+    </receiver>
         <meta-data
                 android:name="BaiduMobAd_STAT_ID"
                 android:value="a7bceb64e8" /> <!-- abcd1234 -->
