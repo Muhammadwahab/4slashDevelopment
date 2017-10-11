@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Process;
 import android.os.StrictMode;
-import android.provider.SyncStateContract;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//        StrictMode.setVmPolicy(builder.build());
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         new downloadFile().execute();
     }
     public class downloadFile extends AsyncTask
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //            File outputFile = new File(file, "wahab.apk");
 //            FileOutputStream fos = new FileOutputStream(outputFile);
 
-          //  FileOutputStream fout = openFileOutput("wahab.apk", Context.MODE_WORLD_READABLE);
+            //  FileOutputStream fout = openFileOutput("wahab.apk", Context.MODE_WORLD_READABLE);
 
             File file = new File(getFilesDir(),"wahab.apk");
             FileOutputStream fileOutputStream=new FileOutputStream(file);
@@ -106,22 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 // Runtime.getRuntime().exec("adb install wahab.apk");
 
             }
-//            promptInstall.setDataAndType(Uri.fromFile(secondFile), "application/vnd.android.package-archive");
-//           // promptInstall.putExtra()
-//            promptInstall.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-//
-//            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//            startActivity(promptInstall);
+            promptInstall.setDataAndType(Uri.fromFile(secondFile), "application/vnd.android.package-archive");
+            // promptInstall.putExtra()
+            promptInstall.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
 
-            Uri apkUri = FileProvider.getUriForFile(getApplicationContext(),
-                    BuildConfig.APPLICATION_ID,secondFile);
-            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-            intent.setDataAndType(apkUri,"application/vnd.android.package-archive");
-            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(intent);
+            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(promptInstall);
 
             // Complete Read Apk from file Directory
 
