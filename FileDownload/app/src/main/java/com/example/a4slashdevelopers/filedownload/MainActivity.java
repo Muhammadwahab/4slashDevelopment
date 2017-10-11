@@ -6,9 +6,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Process;
+import android.os.StrictMode;
+import android.provider.SyncStateContract;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//        StrictMode.setVmPolicy(builder.build());
         new downloadFile().execute();
     }
     public class downloadFile extends AsyncTask
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            //  loadFile("https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg");
+            // loadFile("http://110.37.231.10:8080/projects/wahab_download_test/host.apk");
             loadFile("http://sirius.androidapks.com/sdata/bf77952865b725cd4b1fa2c54b057bc9/com.facebook.lite_v60.0.0.5.140-72097660_Android-2.3.apk");
             return objects;
         }
@@ -51,13 +57,17 @@ public class MainActivity extends AppCompatActivity {
             int contentLength = conn.getContentLength();
 
             // writing file Start
-            String PATH = Environment.getExternalStorageDirectory() + "/download/";
-            File file = new File(PATH);
-            file.mkdirs();
-            File outputFile = new File(file, "wahab.apk");
-            FileOutputStream fos = new FileOutputStream(outputFile);
+//            String PATH = Environment.getExternalStorageDirectory() + "/download/";
+//            File file = new File(PATH);
+//            file.mkdirs();
+//            File outputFile = new File(file, "wahab.apk");
+//            FileOutputStream fos = new FileOutputStream(outputFile);
 
-            FileOutputStream fout = openFileOutput("wahab.apk", Context.MODE_WORLD_READABLE);
+          //  FileOutputStream fout = openFileOutput("wahab.apk", Context.MODE_WORLD_READABLE);
+
+            File file = new File(getFilesDir(),"wahab.apk");
+            FileOutputStream fileOutputStream=new FileOutputStream(file);
+
 
 
             InputStream is = conn.getInputStream();
@@ -65,10 +75,9 @@ public class MainActivity extends AppCompatActivity {
             byte[] buffer = new byte[contentLength];
             int len1 = 0;
             while ((len1 = is.read(buffer)) != -1) {
-                fout.write(buffer, 0, len1);
+                fileOutputStream.write(buffer, 0, len1);
             }
-            fout.close();
-            fout.close();
+            fileOutputStream.close();
 
             // writing file Complete
 
@@ -97,10 +106,22 @@ public class MainActivity extends AppCompatActivity {
                 // Runtime.getRuntime().exec("adb install wahab.apk");
 
             }
-            promptInstall.setDataAndType(Uri.fromFile(secondFile), "application/vnd.android.package-archive");
-            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            promptInstall.setDataAndType(Uri.fromFile(secondFile), "application/vnd.android.package-archive");
+//           // promptInstall.putExtra()
+//            promptInstall.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+//
+//            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//            startActivity(promptInstall);
 
-            startActivity(promptInstall);
+            Uri apkUri = FileProvider.getUriForFile(getApplicationContext(),
+                    BuildConfig.APPLICATION_ID,secondFile);
+            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            intent.setDataAndType(apkUri,"application/vnd.android.package-archive");
+            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
 
             // Complete Read Apk from file Directory
 
@@ -110,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 //
         } catch(FileNotFoundException e) {
+            Toast.makeText(this, ""+e, Toast.LENGTH_SHORT).show();
             return; // swallow a 404
         } catch (IOException e) {
             return; // swallow a 404
