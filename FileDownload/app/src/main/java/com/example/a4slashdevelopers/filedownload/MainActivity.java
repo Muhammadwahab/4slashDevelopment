@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(promptInstall);
 
-            // Complete Read Apk from file Directory
+            // Complete Read Apk from file Dir
 
 
             //till here, it works fine - .apk is download to my sdcard in download file
